@@ -18,6 +18,7 @@
 """
 from plone.app.testing.bbb import PloneTestCaseFixture, PloneTestCase
 from plone.app import testing
+from plone.app.testing import setRoles, TEST_USER_ID
 from plone.testing import z2
 
 
@@ -41,6 +42,13 @@ class CCMFixture(PloneTestCaseFixture):
 
     def setUpPloneSite(self, portal):
         super(PloneTestCaseFixture, self).setUpPloneSite(portal)
+
+        # prepare structure
+        if 'news' not in portal:
+            setRoles(portal, TEST_USER_ID, ['Manager'])
+            portal.invokeFactory('Folder', 'news', title='News Folder')
+            setRoles(portal, TEST_USER_ID, ['Member'])
+
         # install product
         testing.applyProfile(portal, 'collective.contentrules.mail:default')
 
@@ -57,6 +65,8 @@ class CCMFixture(PloneTestCaseFixture):
         # patch mail host
         #portal._old = MailHost.MailHost
         #MailHost.MailHost = TestMailHost
+
+        portal.manage_changeProperties(email_from_name='Site Administrator')
 
     def tearDownZope(self, app):
         super(PloneTestCaseFixture, self).tearDownZope(app)
