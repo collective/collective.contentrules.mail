@@ -4,11 +4,11 @@ Changelog
 0.7 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Ported tests to plone.app.testing
+  [tomgross]
 
-
-0.7-FHNW1 (2013-02-01)
-----------------------
+- Plone 4.3 compatibiliy
+  [tomgross]
 
 - Moved to https://github.com/collective/collective.contentrules.mail
   [maurits]
