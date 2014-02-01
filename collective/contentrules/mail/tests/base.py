@@ -16,15 +16,10 @@
 # Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 """" defines a test class and its Plone Site layer for plone tests
 """
-from Products.Five import zcml
-from Products.Five import fiveconfigure
-from Products.PloneTestCase import PloneTestCase as ptc
-from Products.PloneTestCase.layer import PloneSite
+from plone.app.testing.bbb import PloneTestCaseFixture, PloneTestCase
+from plone.app import testing
+from plone.testing import z2
 
-# setting up plone site
-ptc.setupPloneSite()
-
-import collective.contentrules.mail
 
 # fake mailhost
 from Products.MailHost import MailHost
@@ -35,21 +30,47 @@ class TestMailHost(MailHost.MailHost):
         """Fake sender"""
         print messageText
 
-class TestCase(ptc.FunctionalTestCase):
-    """test case used in tests"""
 
-    class layer(PloneSite):
-        @classmethod
-        def setUp(cls):
-            fiveconfigure.debug_mode = True
-            zcml.load_config('configure.zcml',
-                             collective.contentrules.mail)
-            fiveconfigure.debug_mode = False
-            cls._old = MailHost.MailHost
-            MailHost.MailHost = TestMailHost
+class CCMFixture(PloneTestCaseFixture):
 
-        @classmethod
-        def tearDown(cls):
-            MailHost.MailHost = cls._old
+    def setUpZope(self, app, configurationContext):
+        super(PloneTestCaseFixture, self).setUpZope(app, configurationContext)
+        import collective.contentrules.mail
+        self.loadZCML(package=collective.contentrules.mail)
+        z2.installProduct(app, 'collective.contentrules.mail')
 
+    def setUpPloneSite(self, portal):
+        super(PloneTestCaseFixture, self).setUpPloneSite(portal)
+        # install product
+        testing.applyProfile(portal, 'collective.contentrules.mail:default')
+
+        # install testing profile
+        from Products.GenericSetup import EXTENSION, profile_registry
+        profile_registry.registerProfile('testing',
+            "collective.contentrules.mail testing",
+            'Used for testing only',
+            'profiles/testing',
+            'collective.contentrules.mail',
+            EXTENSION)
+        testing.applyProfile(portal, 'collective.contentrules.mail:testing')
+
+        # patch mail host
+        #portal._old = MailHost.MailHost
+        #MailHost.MailHost = TestMailHost
+
+    def tearDownZope(self, app):
+        super(PloneTestCaseFixture, self).tearDownZope(app)
+        z2.uninstallProduct(app, 'collective.contentrules.mail')
+
+
+
+PTC_FIXTURE = CCMFixture()
+PTC_FUNCTIONAL_TESTING = testing.FunctionalTesting(
+    bases=(PTC_FIXTURE,), name='PloneTestCase:Functional')
+
+
+class TestCase(PloneTestCase):
+    """ Base class used for test cases """
+
+    layer = PTC_FUNCTIONAL_TESTING
 

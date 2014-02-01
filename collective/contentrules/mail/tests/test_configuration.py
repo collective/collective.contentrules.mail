@@ -20,56 +20,7 @@ from Testing import ZopeTestCase
 
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
-zcml_string = """\
-<configure xmlns="http://namespaces.zope.org/zope"
-           xmlns:gs="http://namespaces.zope.org/genericsetup"
-           package="collective.contentrules.mail">
-
-    <gs:registerProfile
-        name="testing"
-        title="collective.contentrules.mail testing"
-        description="Used for testing only"
-        directory="tests/profiles/testing"
-        for="Products.CMFCore.interfaces.ISiteRoot"
-        provides="Products.GenericSetup.interfaces.EXTENSION"
-        />
-
-</configure>
-"""
-
-class TestContentrulesGSLayer(PloneSite):
-
-    @classmethod
-    def setUp(cls):
-
-        fiveconfigure.debug_mode = True
-        zcml.load_string(zcml_string)
-        fiveconfigure.debug_mode = False
-
-        app = ZopeTestCase.app()
-        portal = app.plone
-
-        portal_setup = portal.portal_setup
-        portal_setup.runAllImportStepsFromProfile('profile-collective.contentrules.mail:testing')
-
-        commit()
-        ZopeTestCase.close(app)
-
-    @classmethod
-    def tearDown(cls):
-        app = ZopeTestCase.app()
-        portal = app.plone
-
-        storage = getUtility(IRuleStorage, context=portal)
-        for key in list(storage.keys()):
-            del storage[key]
-
-        commit()
-        ZopeTestCase.close(app)
-
 class TestGenericSetup(TestCase):
-
-    layer = TestContentrulesGSLayer
 
     def afterSetUp(self):
         self.storage = getUtility(IRuleStorage)
