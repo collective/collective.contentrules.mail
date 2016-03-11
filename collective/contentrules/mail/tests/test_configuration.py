@@ -20,6 +20,7 @@ from Testing import ZopeTestCase
 
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
 
+
 class TestGenericSetup(TestCase):
 
     def afterSetUp(self):
@@ -64,7 +65,7 @@ class TestGenericSetup(TestCase):
 
     def testImportTwice(self):
         portal_setup = self.portal.portal_setup
-        time.sleep(1) # avoid timestamp colission
+        time.sleep(1)  # avoid timestamp colission
         portal_setup.runAllImportStepsFromProfile('profile-collective.contentrules.mail:testing')
 
         # We should get the same results as before
@@ -115,6 +116,7 @@ class TestGenericSetup(TestCase):
 
         body = exporter.body
         self.assertEquals(expected.strip(), body.strip(), body)
+
 
 def test_suite():
     from unittest import TestSuite, makeSuite

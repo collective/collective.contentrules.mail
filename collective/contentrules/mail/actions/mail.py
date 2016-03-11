@@ -42,6 +42,7 @@ from collective.contentrules.mail.interfaces import IMailModel
 from smtplib import SMTPException
 from Products.MailHost.MailHost import MailHostError
 
+
 class IMailAction(Interface):
     """Definition of the configuration available for a mail action
     """
@@ -49,12 +50,12 @@ class IMailAction(Interface):
     model = Choice(
         title=_(u"Mail model"),
         required=True,
-        vocabulary="collective.contentrules.mail.vocabulary.model",)
+        vocabulary="collective.contentrules.mail.vocabulary.model", )
 
     mimetype = Choice(
         title=_(u"Mail mimetype"),
         required=True,
-        vocabulary="collective.contentrules.mail.vocabulary.mimetype",)
+        vocabulary="collective.contentrules.mail.vocabulary.mimetype", )
 
     subject = TextLine(
         title=_(u"Subject"),
@@ -63,25 +64,25 @@ class IMailAction(Interface):
 
     source = TextLine(
         title=_(u"Email source"),
-        description=_("The email address that sends the email. If no email is"\
+        description=_("The email address that sends the email. If no email is" \
                       " provided here, it will use the portal from address."),
         required=False)
 
     recipients = TextLine(
         title=_(u"Email recipients"),
-        description=_("The email where you want to send this message. To send"\
+        description=_("The email where you want to send this message. To send" \
             " it to different email addresses, just separate them with commas."),
         required=True)
 
     cc = TextLine(
         title=_(u"CC recipients"),
-        description=_("The email to receive a copy of this message. To send"\
+        description=_("The email to receive a copy of this message. To send" \
             " it to different email addresses, just separate them with commas."),
         required=False)
 
     bcc = TextLine(
         title=_(u"BCC recipients"),
-        description=_("The email to receive a blind copy of this message. To"\
+        description=_("The email to receive a blind copy of this message. To" \
      " send it to different email addresses, just separate them with commas."),
         required=False)
 
@@ -89,6 +90,7 @@ class IMailAction(Interface):
         title=_(u"Message"),
         description=_(u"Type in here the message that you want to mail."),
         required=True)
+
 
 class MailAction(SimpleItem):
     """
@@ -154,7 +156,8 @@ class MailActionExecutor(object):
 
         # Apply word substitution on every mail fields
         def substitute(text):
-            if not text: return ""
+            if not text:
+                return ""
 
             for word_id, replacement_value in words.items():
                 text = text.replace(u"${%s}" % word_id, replacement_value)
@@ -233,11 +236,12 @@ action or enter an email in the portal properties"
                                 subject=subject, subtype=mimetype,
                                 mcc=cc, mbcc=bcc,
                                 charset=email_charset, debug=False)
-        except (MailHostError, SMTPException,), e:
+        except (MailHostError, SMTPException, ), e:
             LOG.exception(u"Failed to send mail")
             return False
 
         return True
+
 
 class MailAddForm(AddForm):
     """
@@ -253,6 +257,7 @@ class MailAddForm(AddForm):
         a = MailAction()
         form.applyChanges(a, self.form_fields, data)
         return a
+
 
 class MailEditForm(EditForm):
     """

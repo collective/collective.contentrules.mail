@@ -60,10 +60,10 @@ class MimetypeVocabulary(object):
         terms = (
             SimpleTerm(
                 u"plain",
-                title=_(u"text/plain",)),
+                title=_(u"text/plain", )),
             SimpleTerm(
                 u"html",
-                title=_(u"text/html",)),
+                title=_(u"text/html", )),
             )
 
         return SimpleVocabulary(terms)

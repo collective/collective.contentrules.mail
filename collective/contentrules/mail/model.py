@@ -22,6 +22,7 @@ from collective.contentrules.mail.interfaces import IMailModel
 from collective.contentrules.mail.interfaces import IMailReplacer
 from collective.contentrules.mail import MessageFactory as _
 
+
 class MailModel(object):
     """A mail model described by interface.
 

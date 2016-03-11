@@ -19,6 +19,7 @@ from zope.schema import TextLine, Object, List, Tuple
 
 from collective.contentrules.mail import MessageFactory as _
 
+
 class IMailModel(Interface):
     """A named utility providing a mail model.
 
@@ -31,11 +32,11 @@ class IMailModel(Interface):
     are obtained from the adapter.
     """
 
-    title = TextLine(title=_(u"A friendly name for model",))
+    title = TextLine(title=_(u"A friendly name for model", ))
 
     replacer_interface = Object(
         title=_(u"Mail replacer schema"),
-        description=_(u"Interface providing word substitution in "\
+        description=_(u"Interface providing word substitution in " \
                         "mail fields: source, recipients, subject, text"),
         schema=Interface)
 
@@ -44,6 +45,7 @@ class IMailModel(Interface):
         description=_(u"Exposes the variables provided by the replacer"),
         value_type=Tuple(title=_(u"Pair of (key, help text,)"),
                          value_type=TextLine(title=_(u"Name or help text"))))
+
 
 class IMailReplacer(Interface):
     """Interface providing variables which can be used in mail fields:
@@ -55,40 +57,40 @@ class IMailReplacer(Interface):
     `replacer_interface`.
     """
 
-    id = TextLine(title=_(u"Id of content",))
+    id = TextLine(title=_(u"Id of content", ))
 
-    title = TextLine(title=_(u"Title of content",))
+    title = TextLine(title=_(u"Title of content", ))
 
-    description = TextLine(title=_(u"Description of content",))
+    description = TextLine(title=_(u"Description of content", ))
 
-    url = TextLine(title=_(u"URL to access content",))
+    url = TextLine(title=_(u"URL to access content", ))
 
     relative_url = TextLine(
-        title=_(u"Relative URL from portal to access content",))
+        title=_(u"Relative URL from portal to access content", ))
 
-    portal_url = TextLine(title=_(u"URL of portal",))
+    portal_url = TextLine(title=_(u"URL of portal", ))
 
-    owner_id = TextLine(title=_(u"Login of content ower",))
+    owner_id = TextLine(title=_(u"Login of content ower", ))
 
-    owner_fullname = TextLine(title=_(u"Full name of content owner",))
+    owner_fullname = TextLine(title=_(u"Full name of content owner", ))
 
     owner_emails = TextLine(
-        title=_(u"Emails of users having Owner role on content",))
+        title=_(u"Emails of users having Owner role on content", ))
 
     reader_emails = TextLine(
-            title=_(u"Emails of users having Reader role on content",))
+            title=_(u"Emails of users having Reader role on content", ))
 
     contributor_emails = TextLine(
-            title=_(u"Emails of users having Contributor role on content",))
+            title=_(u"Emails of users having Contributor role on content", ))
 
     editor_emails = TextLine(
-            title=_(u"Emails of users having Editor role on content",))
+            title=_(u"Emails of users having Editor role on content", ))
 
     reviewer_emails = TextLine(
-            title=_(u"Emails of users having Reviewer role on content",))
+            title=_(u"Emails of users having Reviewer role on content", ))
 
-    default_from_email = TextLine(title=_(u"Email address of default sender",))
+    default_from_email = TextLine(title=_(u"Email address of default sender", ))
 
-    default_from_name = TextLine(title=_(u"Full name of default sender",))
+    default_from_name = TextLine(title=_(u"Full name of default sender", ))
 
-    review_state = TextLine(title=_(u"State of content",))
+    review_state = TextLine(title=_(u"State of content", ))

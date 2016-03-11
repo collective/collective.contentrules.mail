@@ -21,13 +21,13 @@ from plone.app import testing
 from plone.app.testing import setRoles, TEST_USER_ID
 from plone.testing import z2
 
-
 # fake mailhost
 from Products.MailHost import MailHost
 
+
 class TestMailHost(MailHost.MailHost):
 
-    def _send(self, mfrom, mto, messageText ):
+    def _send(self, mfrom, mto, messageText):
         """Fake sender"""
         print messageText
 
@@ -61,7 +61,6 @@ class CCMFixture(PloneTestCaseFixture):
             'collective.contentrules.mail',
             EXTENSION)
         testing.applyProfile(portal, 'collective.contentrules.mail:testing')
-
         # patch mail host
         #portal._old = MailHost.MailHost
         #MailHost.MailHost = TestMailHost
@@ -72,15 +71,12 @@ class CCMFixture(PloneTestCaseFixture):
         super(PloneTestCaseFixture, self).tearDownZope(app)
         z2.uninstallProduct(app, 'collective.contentrules.mail')
 
-
-
 PTC_FIXTURE = CCMFixture()
 PTC_FUNCTIONAL_TESTING = testing.FunctionalTesting(
-    bases=(PTC_FIXTURE,), name='PloneTestCase:Functional')
+    bases=(PTC_FIXTURE, ), name='PloneTestCase:Functional')
 
 
 class TestCase(PloneTestCase):
     """ Base class used for test cases """
 
     layer = PTC_FUNCTIONAL_TESTING
-

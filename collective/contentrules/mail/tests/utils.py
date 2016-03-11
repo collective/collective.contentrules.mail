@@ -22,7 +22,7 @@ __docformat__ = 'restructuredtext'
 from DateTime import DateTime
 
 
-def addMember(self, username, fullname="", email="", roles=('Member',), last_login_time=None):
+def addMember(self, username, fullname="", email="", roles=('Member', ), last_login_time=None):
     """Create an new member
 
     The password is always 'secret'
@@ -40,7 +40,7 @@ def setUpDefaultMembers(self):
     addMember(self, 'manager2', 'Manager two', roles=('Manager', 'Member'))
     addMember(self, 'reviewer1', 'Reviewer one', roles=('Reviewer', 'Member'))
     addMember(self, 'reviewer2', 'Reviewer two', roles=('Reviewer', 'Member'))
-    addMember(self, 'member1', 'Member one', roles=('Member',))
-    addMember(self, 'member2', 'Member two', roles=('Member',))
-    addMember(self, 'authenticated1', 'Authenticated one', roles=('Anonymous',))
-    addMember(self, 'anonymous1', 'Anonymous one', roles=('Anonymous',))
+    addMember(self, 'member1', 'Member one', roles=('Member', ))
+    addMember(self, 'member2', 'Member two', roles=('Member', ))
+    addMember(self, 'authenticated1', 'Authenticated one', roles=('Anonymous', ))
+    addMember(self, 'anonymous1', 'Anonymous one', roles=('Anonymous', ))
