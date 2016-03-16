@@ -16,24 +16,9 @@
 # Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 # Initialize logger
-import os
 import logging
-from config import PROJECTNAME
-
-LOG = logging.getLogger(PROJECTNAME)
-
-if os.path.isfile(os.path.join(__path__[0], 'debug.txt')):
-    class DebugFilter(logging.Filter):
-        def filter(self, record):
-            if record.levelno == logging.DEBUG:
-                # raise level to allow going through zope logger
-                record.levelno = 49
-            return True
-    LOG.addFilter(DebugFilter(PROJECTNAME))
-    LOG.setLevel(logging.DEBUG)
-
-LOG.info("Logging level set to %s",
-         logging.getLevelName(LOG.getEffectiveLevel()))
-
 from zope.i18nmessageid import MessageFactory as BaseMessageFactory
+
+PROJECTNAME = 'collective.contentrules.mail'
+LOG = logging.getLogger(PROJECTNAME)
 MessageFactory = BaseMessageFactory(PROJECTNAME)

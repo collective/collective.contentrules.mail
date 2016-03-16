@@ -14,19 +14,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; see the file COPYING. If not, write to the
 # Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-from zope.component import getUtilitiesFor
-from zope.interface import implements
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
-
-try:
-    from zope.schema.interfaces import IVocabularyFactory
-    IVocabularyFactory  # pyflakes
-except ImportError:
-    # BBB for Plone < 4.1
-    from zope.app.schema.vocabulary import IVocabularyFactory
-
 from collective.contentrules.mail.interfaces import IMailModel
 from collective.contentrules.mail import MessageFactory as _
+from zope.component import getUtilitiesFor
+from zope.interface import implements
+from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 
 
 class ModelVocabulary(object):
@@ -36,16 +29,10 @@ class ModelVocabulary(object):
     implements(IVocabularyFactory)
 
     def __call__(self, context):
-        terms = []
-
-        for name, utility in getUtilitiesFor(IMailModel):
-            terms.append(
-                SimpleTerm(
-                    name,
-                    title=utility.title)
-                )
-
+        terms = [SimpleTerm(name, title=utility.title)
+                 for name, utility in getUtilitiesFor(IMailModel)]
         return SimpleVocabulary(terms)
+
 
 ModelVocabularyFactory = ModelVocabulary()
 
@@ -67,5 +54,6 @@ class MimetypeVocabulary(object):
             )
 
         return SimpleVocabulary(terms)
+
 
 MimetypeVocabularyFactory = MimetypeVocabulary()
