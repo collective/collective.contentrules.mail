@@ -2,6 +2,9 @@
 Introduction
 ============
 
+.. image:: https://travis-ci.org/collective/collective.contentrules.mail.svg?branch=master
+       :target: https://travis-ci.org/collective/collective.contentrules.mail
+
 This package provides an extended content rule "mail" action with many more
 variable substitutions available, including the name and email address of
 the content owner, making it possible to email the owner of a piece of
