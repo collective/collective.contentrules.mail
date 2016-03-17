@@ -1,4 +1,4 @@
+global-exclude *.pyc
+include *
 recursive-include collective *
 recursive-include docs *
-include *
-global-exclude *.pyc
