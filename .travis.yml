@@ -1,0 +1,37 @@
+language: python
+sudo: false
+addons:
+  apt:
+    packages:
+      libxml2-dev
+      libxslt-dev
+      python-imaging
+python:
+  - 2.6
+  - 2.7
+env:
+  - PLONE=4.0
+  - PLONE=4.1
+  - PLONE=4.2
+  - PLONE=4.3
+#  - PLONE=5.0
+matrix:
+  exclude:
+    - python: 2.7
+      env: PLONE=4.0
+    - python: 2.7
+      env: PLONE=4.1
+    - python: 2.6
+      env: PLONE=4.2
+    - python: 2.6
+      env: PLONE=4.3
+#    - python: 2.6
+#      env: PLONE=5.0
+before_install:
+  - mkdir -p buildout-cache/eggs
+  - mkdir -p buildout-cache/downloads
+install:
+  - python bootstrap$(echo $PLONE | cut -f1 -d.).py -c test-$PLONE.x.cfg
+  - bin/buildout -t 5 -Nc test-$PLONE.x.cfg
+script:
+  - bin/test
