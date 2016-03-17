@@ -1,8 +1,8 @@
 *.egg
 *.egg-info
 *.mo
-*.pyc
-*.pyo
+*.py[co]
+*.bak
 .installed.cfg
 .mr.developer.cfg
 bin
@@ -14,3 +14,5 @@ eggs
 fake-eggs
 parts
 var
+lib*
+include
