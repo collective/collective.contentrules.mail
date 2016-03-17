@@ -133,8 +133,7 @@ class MailActionExecutor(object):
         utool = getToolByName(aq_inner(self.context), "portal_url")
         portal = utool.getPortalObject()
 
-        site_properties = portal.portal_properties.site_properties
-        site_charset = site_properties.getProperty('default_charset')
+        site_charset = 'utf-8'
         email_charset = portal.getProperty('email_charset')
 
         # Get replacer interface from model
