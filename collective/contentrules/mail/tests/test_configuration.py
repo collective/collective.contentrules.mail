@@ -19,7 +19,8 @@ from Products.PloneTestCase.layer import PloneSite
 from Testing import ZopeTestCase
 
 from zope.lifecycleevent.interfaces import IObjectModifiedEvent
-
+from pkg_resources import get_distribution
+from distutils.version import StrictVersion
 
 class TestGenericSetup(TestCase):
 
@@ -77,11 +78,49 @@ class TestGenericSetup(TestCase):
         site = self.portal
         context = TarballExportContext(self.portal.portal_setup)
         exporter = getMultiAdapter((site, context), IBody, name=u'plone.contentrules')
-
-        expected = """\
+       
+        if StrictVersion(get_distribution('Products.CMFPlone').version) >= StrictVersion('4.3'):
+            expected = """\
 <?xml version="1.0"?>
 <contentrules>
- <rule name="test1" title="Test rule 1" description="A test rule"
+ <rule name="test1" title="Test rule 1" cascading="False"
+    description="A test rule" enabled="True"
+    event="zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    stop-after="False">
+  <conditions>
+   <condition type="plone.conditions.PortalType">
+    <property name="check_types">
+     <element>Document</element>
+     <element>News Item</element>
+    </property>
+   </condition>
+   <condition type="plone.conditions.Role">
+    <property name="role_names">
+     <element>Manager</element>
+    </property>
+   </condition>
+  </conditions>
+  <actions>
+   <action type="collective.contentrules.mail.actions.Mail">
+    <property name="mimetype">html</property>
+    <property name="recipients">${owner_emails}</property>
+    <property name="cc"></property>
+    <property name="bcc">${contributor_emails}</property>
+    <property name="source">${default_from_email}</property>
+    <property name="message">Your content ${title} was modified.</property>
+    <property name="model">collective.contentrules.mail.model.base</property>
+    <property name="subject">Your content was modified</property>
+   </action>
+  </actions>
+ </rule>
+ <assignment name="test1" bubbles="False" enabled="True" location="/news"/>
+</contentrules>
+"""
+        else:
+            expected = """\
+<?xml version="1.0"?>
+<contentrules>
+ <rule name="test1" title="Test rule 1" description="A test rule" %s 
     enabled="True" event="zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     stop-after="False">
   <conditions>
@@ -113,13 +152,5 @@ class TestGenericSetup(TestCase):
  <assignment name="test1" bubbles="False" enabled="True" location="/news"/>
 </contentrules>
 """
-
         body = exporter.body
         self.assertEquals(expected.strip(), body.strip(), body)
-
-
-def test_suite():
-    from unittest import TestSuite, makeSuite
-    suite = TestSuite()
-    suite.addTest(makeSuite(TestGenericSetup))
-    return suite
