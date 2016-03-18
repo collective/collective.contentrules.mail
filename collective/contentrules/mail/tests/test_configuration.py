@@ -120,7 +120,7 @@ class TestGenericSetup(TestCase):
             expected = """\
 <?xml version="1.0"?>
 <contentrules>
- <rule name="test1" title="Test rule 1" description="A test rule" %s 
+ <rule name="test1" title="Test rule 1" description="A test rule"
     enabled="True" event="zope.lifecycleevent.interfaces.IObjectModifiedEvent"
     stop-after="False">
   <conditions>

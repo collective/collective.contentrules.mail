@@ -73,6 +73,3 @@ def doc_suite(test_dir, setUp=None, tearDown=None, globs=None):
 def test_suite():
     """returns the test suite"""
     return doc_suite(current_dir)
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
